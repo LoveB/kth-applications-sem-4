@@ -43,21 +43,21 @@ class PostsController extends Controller
             'subject' => 'required|string|max:255|regex:/^[A-ZÅÄÖa-zåäö0-9_.,()!? ]+$/'
         ]);
 
-        $current_page = session('page');
+        $prev = str_replace(url('/'), '', url()->previous());
 
         //Create post
         if(Auth::check()) {
             $post = new Post;
             $post->body = $request->input('subject');
             $post->isDeleted = 0;
-            $post->page = $current_page;
+            $post->page = $prev;
             $post->user_id = auth()->user()->id;
             $post->save();
-            return redirect('/' . $current_page );
+            return redirect()->back();
         } else {
-            return redirect('/' . $current_page )->with('message', 'unauthorized');
+            return redirect()->back()->with('message', 'unauthorized');
             }   
-
+           
     }
 
     /**
@@ -102,13 +102,11 @@ class PostsController extends Controller
      */
     public function delete($id)
     {
-        $current_page = session('page');
-
         $post = Post::find($id);
         $post->isDeleted = 1;
         $post->save();
 
-        return redirect('/' . $current_page );
+        return redirect()->back();
     }
 
     /**
