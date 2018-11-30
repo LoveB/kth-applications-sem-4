@@ -9,8 +9,11 @@ use Session;
 use App\Http\Requests\PostStoreRequest;
 
 
+
 class PostsController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -36,12 +39,15 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'subject' => 'required|string|max:255|regex:/^[A-ZÅÄÖa-zåäö0-9_.,()!? ]+$/'
         ]);
+
 
         $prev = str_replace(url('/'), '', url()->previous());
 
