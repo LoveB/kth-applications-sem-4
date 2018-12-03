@@ -84,7 +84,11 @@
     }
 
     .navbar-nav {
-        margin-left:0em;
+        margin-left:2em;
+
+    }
+    .topnav .links {
+        width: 100%;
     }
 
     .flaticon-fork {
@@ -266,6 +270,10 @@
     .navbar-small {
         display: none;
     }
+    .container {
+       padding-left: 0px;
+        padding-right:0px;
+    }
 }
 
 
@@ -282,9 +290,6 @@
         margin-left: 15em;
         margin-right: 15em;
     }
-    .container {
-        padding-left: 30%;
-        padding-right: 30%;
-    }
+   
 
 }
