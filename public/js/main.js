@@ -91,8 +91,11 @@ function myFunction() {
                 }
             }); 
 
+            $('textarea').val('');
+
         });
 
+        /* DISPLAY COMMENT */
         function displayComment() {
             if(!(username == null)){
                 $(".comment-area").prepend(
@@ -105,6 +108,8 @@ function myFunction() {
                     alert('You must be logged in to write posts');
             }
         }
+
+         /* DELETE COMMENT */
 
         function ajaxDelete($id) {
             /* Mark commet as deleted in database */
@@ -157,11 +162,10 @@ function myFunction() {
             },
             error: function(data){
                 console.log(data);
-                
-              
             }
         }); 
     });
+     /* LOG IN */
 
     $("#loginForm").submit(function(e){   
         e.preventDefault();
@@ -183,6 +187,8 @@ function myFunction() {
 
    
 });
+
+ /* LOG OUT */
 
 $(document).on('click','#log-out-link',function (e){   
     e.preventDefault();

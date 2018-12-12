@@ -76,7 +76,6 @@ class RegisterController extends Controller
         // $rules = array('name'=> 'required|min:3', 'email' => 'required|email', 'password' => 'required|min:6|confirmed');  
         $validation = $this->validator($request->all());
         if ($validation->fails())  {  
-            // return response()->json($validation->errors()->toArray());
             return response()->json(['errors'=>$validation->errors()->all()]);
         }
         else{
