@@ -12,7 +12,7 @@
             </button>
 
             <!-- Branding Image -->
-            <a id="logo" href="/sem_three/public/" class="flaticon-fork"></a>
+            <a id="logo" href="/sem_four_ajax/public/" class="flaticon-fork"></a>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -38,13 +38,11 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
+                                <a id="log-out-link">
                                     Logout
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form"  style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>

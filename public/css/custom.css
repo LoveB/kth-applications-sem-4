@@ -708,7 +708,7 @@ input[type=text], select, textarea {
     resize: vertical;
 }
 
-input[type=submit] {
+input[type=submit], #ajaxSubmitComment {
     color: darkslategray !important;
     text-transform: uppercase;
     background:none;
@@ -722,7 +722,7 @@ input[type=submit] {
     width: 10em;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, #ajaxSubmitComment:hover {
     color: #ffffff !important;
     background: #f6b93b;
     border-color: #f6b93b !important;
@@ -773,8 +773,25 @@ label {
        font-family: 'Lora', serif; 
 }
 
-#delete-button{
+
+
+#delete-button, #delete-button-jq {
     width: 6em;
     height: 2em;
+    color: darkslategray !important;
+    text-transform: uppercase;
+    background: none;
     padding: 0.4em;
+    border: 2px solid darkslategray !important;
+    border-radius: 0px;
+    display: block;
+    margin-top: 1em;
+    font-family: Helvetica, sans-serif;
+}
+
+#delete-button:hover, #delete-button-jq:hover{
+    color: #ffffff !important;
+    background: #f6b93b;
+    border-color: #f6b93b !important;
+    transition: all 0.4s ease 0s;
 }

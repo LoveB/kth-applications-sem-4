@@ -7,11 +7,16 @@ use App\Post;
 use Auth;
 use Session;
 use App\Http\Requests\PostStoreRequest;
+use App\Events\NewComment;
 
 
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
 
     /**
@@ -43,28 +48,33 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+    
 
-        $this->validate($request, [
+       $this->validate($request, [
             'subject' => 'required|string|max:255|regex:/^[A-ZÅÄÖa-zåäö0-9_.,()!? ]+$/'
         ]);
 
-
+        $name = auth()->user()->name;
         $prev = str_replace(url('/'), '', url()->previous());
 
-        //Create post
-        if(Auth::check()) {
+        try {
             $post = new Post;
-            $post->body = $request->input('subject');
+            $post->body = $request->subject;
             $post->isDeleted = 0;
             $post->page = $prev;
             $post->user_id = auth()->user()->id;
-            $post->save();
-            return redirect()->back();
-        } else {
-            return redirect()->back()->with('message', 'unauthorized');
-            }   
-           
+            $post->save(); 
+            $id = $post->id;
+
+            event(new NewComment($comment));
+
+            return response()->json(['success' => $id . ' is stored']);
+
+        } catch(Exception $e){
+            return response()->json(['error' => 'Post not stored']);
     }
+    }
+
 
     /**
      * Display the specified resource.
@@ -106,13 +116,18 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $post = Post::find($id);
-        $post->isDeleted = 1;
-        $post->save();
-
-        return redirect()->back();
+        try {
+            $postId = $request->id;
+            $post = Post::find($postId);
+            $post->isDeleted = 1;
+            $post->save();
+            return response()->json(['success'=>'Data is successfully deleted']);
+        } catch(Exception $e){
+            report($e);
+            return response()->json(['error'=>'Data is not deleted']);
+        }
     }
 
     /**

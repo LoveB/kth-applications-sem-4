@@ -21,6 +21,13 @@ class RedirectIfAuthenticated
             return redirect('/home');
         }
 
+      /*   if ($request->ajax()){
+            if ($this->auth->guest())
+                {
+                }
+
+        } */
+
         return $next($request);
     }
 }

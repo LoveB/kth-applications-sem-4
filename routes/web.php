@@ -17,8 +17,12 @@ Route::get('/meatballs', 'PagesController@meatballs');
 Route::get('/calendar', 'PagesController@calendar');
 
 Route::resource('posts', 'PostsController');
-Route::any('/posts/{id}/delete', 'PostsController@delete');
+Route::post('/posts/delete', 'PostsController@delete');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/postajax','PostsController@store');
+Route::get('/userajax','UserController@userDetails');
+Route::post('/register','Auth\RegisterController@register');

@@ -49,5 +49,7 @@ if (token) {
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
+//     key: 'pusherappkey',
+//     cluster: 'eu',
+//     encrypted: true
 // });
