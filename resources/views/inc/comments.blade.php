@@ -6,6 +6,7 @@
     <h2>Please leave a comment!</h2>
     @if(Auth::user())
     <form id="comment-form">
+            {{ csrf_field() }}
         <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px" required></textarea>
         <button id="ajaxSubmitComment">Submit</button>
     </form>

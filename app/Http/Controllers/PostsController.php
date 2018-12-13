@@ -49,15 +49,15 @@ class PostsController extends Controller
     public function store(Request $request)
     {
     
+        if ($request->subject){
 
-       $this->validate($request, [
+        $this->validate($request, [
             'subject' => 'required|string|max:255|regex:/^[A-ZÅÄÖa-zåäö0-9_.,()!? ]+$/'
         ]);
 
         $name = auth()->user()->name;
         $prev = str_replace(url('/'), '', url()->previous());
 
-        try {
             $post = new Post;
             $post->body = $request->subject;
             $post->isDeleted = 0;
@@ -66,13 +66,12 @@ class PostsController extends Controller
             $post->save(); 
             $id = $post->id;
 
-            event(new NewComment($comment));
-
             return response()->json(['success' => $id . ' is stored']);
 
-        } catch(Exception $e){
-            return response()->json(['error' => 'Post not stored']);
-    }
+       }
+           else { return response()->json(['error' => 'comment is empty']);
+           }
+    
     }
 
 

@@ -1,17 +1,7 @@
-
-
-
-function myFunction() {
-        var x = document.getElementById("myLinks");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        } else {
-            x.style.display = "block";
-        }
-    }
     
     
     $(document).ready(function(){
+
         /* POSTS */
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var username;
@@ -26,7 +16,7 @@ function myFunction() {
             dataType: "json",
             /* remind that 'data' is the response of the AjaxController */
             success: function(data) {
-                console.log(data);
+                console.log('logged in user: ' +  data.success);
                 set_username(data.success);
             },
             error: function(data){
@@ -60,7 +50,11 @@ function myFunction() {
 
             $subject = $('#subject').val();
 
+            if(!($subject === '')){
             displayComment();
+            } else {
+                alert('You must write something to post a comment.');
+            }
 
             /* Remove the comment from display when placed in current rendering of page */
             $("#delete-button-jq").on('click', function(){
@@ -69,8 +63,6 @@ function myFunction() {
             /* Mark comment as deleted in database */
             ajaxDelete(postId);
             }); 
-
-            
 
              /* Put comment in database (via server) */
             $.ajax({
@@ -88,6 +80,7 @@ function myFunction() {
                 },
                 error: function(data){
                     console.log(data);
+                    
                 }
             }); 
 
@@ -95,22 +88,17 @@ function myFunction() {
 
         });
 
-        /* DISPLAY COMMENT */
+        /* display comment*/
         function displayComment() {
-            if(!(username == null)){
                 $(".comment-area").prepend(
                 '<div class="comment">' +
-                    '<h4>'+ username +'</h4>' +
-                    ' <p class="date-time">'+ $date + ' ' + $time +'</p>' + 
-                    ' <p>' + $subject + '</p>' +
-                    '<button id="delete-button-jq">DELETE</button>') 
-                } else {
-                    alert('You must be logged in to write posts');
-            }
+                '<h4>'+ username +'</h4>' +
+                ' <p class="date-time">'+ $date + ' ' + $time +'</p>' + 
+                ' <p>' + $subject + '</p>' +
+                '<button id="delete-button-jq">DELETE</button>') 
         }
 
-         /* DELETE COMMENT */
-
+         /* Delete comment*/
         function ajaxDelete($id) {
             /* Mark commet as deleted in database */
             
@@ -132,8 +120,9 @@ function myFunction() {
            }); 
        }
 
-       /* REGISTER */
+       /* USERS */
 
+    /*Register user */
     $(document).on('click','#register-btn',function (event) {
         event.preventDefault();          
         $.ajax({
@@ -149,24 +138,24 @@ function myFunction() {
                 password_confirm:$("#password_confirm").val()},
             /* remind that 'data' is the response of the PostController */
             success: function(data) {
-                console.log(data);
-
                 if(data.errors){
-                jQuery.each(data.errors, function(key, value){
-                    jQuery('.alert-danger').show();
-                    jQuery('.alert-danger').append('<p>'+value+'</p>');
-                });
-                } else {
-                    location.reload(true);
-                }
+                    jQuery.each(data.errors, function(key, value){
+                        jQuery('.alert-danger').show();
+                        jQuery('.alert-danger').append('<p>'+value+'</p>');
+                    });
+                    } else {
+                         location.reload(true);
+                    }
             },
-            error: function(data){
-                console.log(data);
+            error: function () {
+                console.log('user not registered');
+                jQuery('.alert-danger').show();
+                jQuery('.alert-danger').append('<p> Wrong username or password </p>');
             }
         }); 
     });
-     /* LOG IN */
 
+     /* Log in user*/
     $("#loginForm").submit(function(e){   
         e.preventDefault();
         let loginForm = $("#loginForm");
@@ -181,42 +170,33 @@ function myFunction() {
                 location.reload(true);
             },
             error: function (data) {
+                // alert(data);
+                jQuery('.alert-danger').show();
+                jQuery('.alert-danger').append('<p> Wrong username or password </p>');
+            }
+        });
+});
+
+    /* Log out user */
+    $(document).on('click','#log-out-link',function (e){   
+        e.preventDefault();
+        let logoutForm = $("#logout-form");
+        let formData = logoutForm.serialize();
+
+        $.ajax({
+            url:'logout',
+            type:'POST',
+            data:formData,
+            success:function(data){
+                console.log(data);
+                location.reload(true);
+            },
+            error: function (data) {
                 alert(data);
             }
         });
-
-   
-});
-
- /* LOG OUT */
-
-$(document).on('click','#log-out-link',function (e){   
-    e.preventDefault();
-    let logoutForm = $("#logout-form");
-    let formData = logoutForm.serialize();
-
-    $.ajax({
-        url:'logout',
-        type:'POST',
-        data:formData,
-        success:function(data){
-            console.log(data);
-            location.reload(true);
-        },
-        error: function (data) {
-            alert(data);
-        }
     });
-
-
-});
-
-
-
-
-   
-
-   });    
+});    
 
 
 
